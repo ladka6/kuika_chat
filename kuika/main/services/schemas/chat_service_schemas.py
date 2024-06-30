@@ -13,3 +13,7 @@ class ChatInput(BaseModel):
     job_description: str
     current_step: int
     message: str
+
+
+class GenerateReport(BaseModel):
+    report: List[str]

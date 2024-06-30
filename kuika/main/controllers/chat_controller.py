@@ -44,24 +44,7 @@ def chat():
     return jsonify(result)
 
 
-@chat_blueprint.route("/user_query", methods=["POST"])
-def user_query():
-    raise NotImplementedError("This endpoint is not implemented yet")
-    # data = request.json
-    # user_query = data.get("query")
-    # result = chat_service.user_query(user_query)
-    # return jsonify(result)
-
-
 @chat_blueprint.route("/generate_report", methods=["POST"])
 def generate_report():
-    raise NotImplementedError("This endpoint is not implemented yet")
-    # result = chat_service.generate_report()
-    # return jsonify(result)
-
-
-@chat_blueprint.route("/chat_state", methods=["GET"])
-def chat_state():
-    raise NotImplementedError("This endpoint is not implemented yet")
-    # result = chat_service.chat_state()
-    # return jsonify(result)
+    report = chat_service.generate_report()
+    return report.report

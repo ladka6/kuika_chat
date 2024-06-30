@@ -4,17 +4,18 @@ from kuika.main.repositories.job_repository import JobRepository
 from kuika.main.services.schemas.chat_service_schemas import (
     StartChatResponse,
     ChatInput,
+    GenerateReport,
 )
 from typing import Any, Dict
 
 
 class ChatService:
     def __init__(self) -> None:
+        session_id = str(session["config_id"])
         self.job_repository = JobRepository()
-        self.llm_interaction = LLMInteraction()
+        self.llm_interaction = LLMInteraction(session_id=session_id)
 
     def start_chat(self, job_description: str) -> Dict[str, Any]:
-        session_id = str(session["config_id"])
 
         summarized_job_description = self.summarize_job_description(job_description)
         all_jobs = self.job_repository.list_jobs()
@@ -23,9 +24,7 @@ class ChatService:
             res = self.job_repository.find_requirements(summarized_job_description)
 
         else:  # if job already exists
-            res = self.llm_interaction.get_requirements(
-                job_description, session_id=session_id
-            )
+            res = self.llm_interaction.get_requirements(job_description)
 
             self.job_repository.create_job(summarized_job_description, res)
 
@@ -61,3 +60,7 @@ class ChatService:
             message=message,
         )
         return res
+
+    def generate_report(self) -> GenerateReport:
+        report = self.llm_interaction.generate_report()
+        return GenerateReport(report=report)

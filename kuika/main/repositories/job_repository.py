@@ -24,7 +24,6 @@ class JobRepository:
     @staticmethod
     def find_requirements(job_description) -> str:
         job: Job = Job.query.filter_by(job_description=job_description).first()
-        print(job)
         return job.requirements
 
     @staticmethod
